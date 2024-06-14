@@ -4,14 +4,12 @@ public class Wget {
     public static void main(String[] args) {
         Thread thread = new Thread(
                 () -> {
-                    int index = 0;
-                    while (index <= 100) {
-                        System.out.println("\rLoading : " + index++ + "%");
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        for (int index = 0; index <= 100; index++)
+                            System.out.println("\rLoading : " + index++ + "%");
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                     System.out.println(System.lineSeparator() + "Loaded.");
                 }
