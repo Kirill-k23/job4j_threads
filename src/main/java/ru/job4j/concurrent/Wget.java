@@ -5,13 +5,14 @@ public class Wget {
         Thread thread = new Thread(
                 () -> {
                     try {
-                        for (int index = 0; index <= 100; index++)
-                            System.out.println("\rLoading : " + index++ + "%");
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println("\rLoading : " + i + "%");
+                            Thread.sleep(100);
+                        }
+                        System.out.println(System.lineSeparator() + "Loaded.");
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    System.out.println(System.lineSeparator() + "Loaded.");
                 }
         );
         thread.start();
