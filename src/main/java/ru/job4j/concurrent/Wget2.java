@@ -33,13 +33,12 @@ public class Wget2 implements Runnable {
     public void run() {
         File file = new File("tmp.xml");
         byte[] bytes = new byte[1024];
-        try (InputStream inputStream = new URL(url).openStream();
-             FileOutputStream outputStream = new FileOutputStream(file)
-        ) {
+        try (InputStream input = new URL(url).openStream();
+             FileOutputStream out = new FileOutputStream(file)) {
             int download;
-            while ((download = inputStream.read(bytes,0, bytes.length)) != -1) {
+            while ((download = input.read(bytes, 0, bytes.length)) != -1) {
                 long start = System.nanoTime();
-                outputStream.write(bytes,0, download);
+                out.write(bytes, 0, download);
                 double time = System.nanoTime() - start;
                 double realSpeed = bytes.length / time * 1000000;
                 if (speed < realSpeed) {
@@ -51,7 +50,7 @@ public class Wget2 implements Runnable {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
