@@ -36,9 +36,9 @@ public class Wget2 implements Runnable {
         try (InputStream input = new URL(url).openStream();
              FileOutputStream out = new FileOutputStream(file)) {
             int download;
-            while ((download = input.read(bytes, 0, bytes.length)) != -1) {
+            while ((download = input.read(bytes,0,bytes.length)) != -1) {
                 long start = System.nanoTime();
-                out.write(bytes, 0, download);
+                out.write(bytes,0,download);
                 double time = System.nanoTime() - start;
                 double realSpeed = bytes.length / time * 1000000;
                 if (speed < realSpeed) {
