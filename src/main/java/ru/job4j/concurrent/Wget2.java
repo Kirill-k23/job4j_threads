@@ -1,6 +1,5 @@
 package ru.job4j.concurrent;
 
-import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,20 +12,17 @@ public class Wget2 implements Runnable {
     private final int speed;
 
     public Wget2(String url, int speed) {
+        validator(url);
         this.url = url;
         this.speed = speed;
     }
 
     public static void main(String[] args) throws InterruptedException {
         String url = args[0];
-        if (!validator(url)) {
-            System.out.println("url is no valid");
-        } else {
-            int speed = Integer.parseInt(args[1]);
-            Thread wget = new Thread(new Wget2(url, speed));
-            wget.start();
-            wget.join();
-        }
+        int speed = Integer.parseInt(args[1]);
+        Thread wget = new Thread(new Wget2(url, speed));
+        wget.start();
+        wget.join();
     }
 
     @Override
@@ -36,9 +32,9 @@ public class Wget2 implements Runnable {
         try (InputStream input = new URL(url).openStream();
              FileOutputStream out = new FileOutputStream(file)) {
             int download;
-            while ((download = input.read(bytes,0,bytes.length)) != -1) {
+            while ((download = input.read(bytes, 0, bytes.length)) != -1) {
                 long start = System.nanoTime();
-                out.write(bytes,0,download);
+                out.write(bytes, 0, download);
                 double time = System.nanoTime() - start;
                 double realSpeed = bytes.length / time * 1000000;
                 if (speed < realSpeed) {
@@ -54,8 +50,11 @@ public class Wget2 implements Runnable {
         }
     }
 
-    public static boolean validator(String url) {
-        UrlValidator validator = new UrlValidator();
-        return validator.isValid(url);
+    private static void validator(String url) {
+        try {
+            new URL(url).toURI();
+        } catch (Exception e) {
+            throw new IllegalStateException("Url invalid");
+        }
     }
 }
