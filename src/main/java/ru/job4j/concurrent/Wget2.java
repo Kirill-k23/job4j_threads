@@ -10,8 +10,10 @@ import java.net.URL;
 public class Wget2 implements Runnable {
     private final String url;
     private final int speed;
+    private static File file;
 
-    public Wget2(String url, int speed) {
+    public Wget2(String url, int speed, File file) {
+        Wget2.file = file;
         validator(url);
         this.url = url;
         this.speed = speed;
@@ -20,29 +22,37 @@ public class Wget2 implements Runnable {
     public static void main(String[] args) throws InterruptedException {
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget2(url, speed));
+        Thread wget = new Thread(new Wget2(url, speed, file));
         wget.start();
         wget.join();
     }
 
     @Override
     public void run() {
-        File file = new File("tmp.xml");
-        byte[] bytes = new byte[1024];
+        long startAt = System.currentTimeMillis();
         try (InputStream input = new URL(url).openStream();
-             FileOutputStream out = new FileOutputStream(file)) {
-            int download;
-            while ((download = input.read(bytes, 0, bytes.length)) != -1) {
-                long start = System.nanoTime();
-                out.write(bytes, 0, download);
-                double time = System.nanoTime() - start;
-                double realSpeed = bytes.length / time * 1000000;
-                if (speed < realSpeed) {
-                    try {
-                        Thread.sleep((long) realSpeed / speed);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+             FileOutputStream output = new FileOutputStream(file)) {
+            System.out.printf(
+                    "Open connection: %d ms%n", System.currentTimeMillis() - startAt);
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+            int countByteRead = 0;
+            long startDownload = System.currentTimeMillis();
+            while ((bytesRead = input.read(dataBuffer, 0, dataBuffer.length)) != -1) {
+                output.write(dataBuffer, 0, bytesRead);
+                countByteRead += bytesRead;
+                if (countByteRead >= speed) {
+                    long endDownload = System.currentTimeMillis() - startDownload;
+                    if (endDownload < 1000) {
+                        try {
+                            long sleep = 1000 - endDownload;
+                            Thread.sleep(sleep);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
+                    startDownload = System.currentTimeMillis();
+                    countByteRead = 0;
                 }
             }
         } catch (IOException e) {
