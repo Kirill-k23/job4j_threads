@@ -12,7 +12,8 @@ public class Wget2 implements Runnable {
     private final int speed;
     private final File file;
 
-    public Wget2(String url, int speed, File file) {;
+    public Wget2(String url, int speed, File file) {
+        ;
         validator(url);
         this.url = url;
         this.speed = speed;
@@ -20,8 +21,8 @@ public class Wget2 implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        if (args.length < 3 ) {
-          throw new IllegalStateException();
+        if (args.length < 3) {
+            throw new IllegalStateException();
         }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
