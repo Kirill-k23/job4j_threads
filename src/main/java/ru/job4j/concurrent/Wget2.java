@@ -13,7 +13,6 @@ public class Wget2 implements Runnable {
     private final File file;
 
     public Wget2(String url, int speed, File file) {
-        ;
         validator(url);
         this.url = url;
         this.speed = speed;
