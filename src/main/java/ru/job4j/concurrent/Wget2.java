@@ -10,19 +10,23 @@ import java.net.URL;
 public class Wget2 implements Runnable {
     private final String url;
     private final int speed;
-    private static File file;
+    private final File file;
 
-    public Wget2(String url, int speed, File file) {
-        Wget2.file = file;
+    public Wget2(String url, int speed, File file) {;
         validator(url);
         this.url = url;
         this.speed = speed;
+        this.file = file;
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length < 3 ) {
+          throw new IllegalStateException();
+        }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget2(url, speed, file));
+        File file1 = new File(args[2]);
+        Thread wget = new Thread(new Wget2(url, speed, file1));
         wget.start();
         wget.join();
     }
