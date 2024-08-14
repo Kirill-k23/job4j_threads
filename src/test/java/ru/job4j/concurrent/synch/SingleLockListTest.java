@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class SingleLockListTest {
 
     @Test
