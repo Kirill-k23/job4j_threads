@@ -9,14 +9,18 @@ import static org.assertj.core.api.Assertions.*;
 
 class SimpleBlockingQueueTest {
     @Test
-    public void Test() throws InterruptedException {
+    public void queueTest() throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>(5);
         List<Integer> list = new ArrayList<>();
         Thread producer = new Thread(() -> {
-            for (int i = 0; i < 5; i++) queue.offer(i);
+            for (int i = 0; i < 5; i++) {
+                queue.offer(i);
+            }
         });
         Thread consumer = new Thread(() -> {
-            for (int i = 0; i < 5; i++) list.add(queue.poll());
+            for (int i = 0; i < 5; i++) {
+                list.add(queue.poll());
+            }
         });
         producer.start();
         consumer.start();
