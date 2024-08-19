@@ -14,12 +14,20 @@ class SimpleBlockingQueueTest {
         List<Integer> list = new ArrayList<>();
         Thread producer = new Thread(() -> {
             for (int i = 0; i < 5; i++) {
-                queue.offer(i);
+                try {
+                    queue.offer(i);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         Thread consumer = new Thread(() -> {
             for (int i = 0; i < 5; i++) {
-                list.add(queue.poll());
+                try {
+                    list.add(queue.poll());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         producer.start();
