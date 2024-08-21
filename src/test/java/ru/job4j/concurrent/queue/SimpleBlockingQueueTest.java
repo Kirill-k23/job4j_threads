@@ -1,6 +1,6 @@
 package ru.job4j.concurrent.queue;
 
-import java.util.Arrays;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.IntStream;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class SimpleBlockingQueueTest {
     @Test
-    public void QueueTest() throws InterruptedException {
+    public void queueTest() throws InterruptedException {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(40);
         Thread producer = new Thread(
