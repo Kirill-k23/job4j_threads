@@ -6,8 +6,7 @@ import java.util.concurrent.Executors;
 public class EmailNotification {
     private final ExecutorService pool = Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors());
-
-
+    
     public void send(String subject, String body, String email) {
         System.out.printf("subject = Notification %s to email %s", subject, email);
         System.out.printf("Add a new event to %s", subject);
