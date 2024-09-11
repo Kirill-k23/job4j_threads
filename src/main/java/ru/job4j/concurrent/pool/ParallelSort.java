@@ -19,7 +19,7 @@ public class ParallelSort<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from < 10) {
-            return LineSearch();
+            return lineSearch();
         }
         int middle = (from + to) / 2;
         ParallelSort<T> parallelLeft = new ParallelSort<>(array, from, middle, key);
@@ -31,7 +31,7 @@ public class ParallelSort<T> extends RecursiveTask<Integer> {
         return Math.max(left, right);
     }
 
-    private Integer LineSearch() {
+    private Integer lineSearch() {
         int item = 0;
         for (int i = from; i <= to; i++) {
             if (array[i].equals(key)) {
